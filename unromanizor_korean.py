@@ -83,15 +83,15 @@ onset = {
     'n': 'ㄴ',
     'm': 'ㅁ',
     'r': 'ㄹ',
-    'l': 'ㄹ'   #need another rule for deromanization
+    'l': 'ㄹ' 
 }
 key_of_vowel = list(vowel.keys())
 value_of_vowel = list(set(vowel.values()))
 key_onset = list(onset.keys())
 
 def translator (trob):
-#.....<trob> means translation object
-#trimming...
+#<trob> means translating object
+#trimming input...
     trob = trob.lower().replace('ǒ', 'ŏ').replace('ǔ', 'ŭ').replace('ō', 'ŏ').replace("author", '').replace('ʻ', '\'').replace('ʼ', '\'')
 #translating...
     if trob.find("shwi") != -1:
@@ -118,22 +118,3 @@ def translator (trob):
     trob = join_jamos(trob)
     trob = trob.replace("y이", "이").replace("우이", '의')
     return trob
-
-with open("/Users/minkijung/Desktop/tplkoreanbook/server/tpl_python/data_webcrawling/new_data/tpl_data.json", "r") as j:
-    books = json.loads(j.read())
-    books = books["books"]
-
-for book in books:
-    book_id = book['id']
-    book_title = book['tpl_title']
-    book_author = book['tpl_author']
-
-    translated_title = translator(book_title)
-    books[book_id]['translated_title'] = translated_title
-
-    translated_author = translator(book_author)
-    books[book_id]['translated_author'] = translated_author
-
-data = {"books": books}
-with open("/Users/minkijung/Desktop/tplkoreanbook/server/tpl_python/data_webcrawling/new_data/translated_data.json", "w") as j:
-    json.dump(data, j, indent=3, ensure_ascii=False)
